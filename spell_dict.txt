@@ -1,0 +1,9 @@
+cls
+func
+args
+kwargs
+attr
+hasattr
+runtime
+monkeypatch
+monkeypatches
