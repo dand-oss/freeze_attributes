@@ -20,7 +20,7 @@ def freeze_attributes(cls: typing.Type) -> typing.Type:
     :param cls:
     """
     # class variable flag to check "frozen"
-    cls.__is_frozen = False  # pylint: disable=protected-access
+    cls.__is_frozen = False
 
     def _setattr_check_exists(
         self: typing.Any, key: str, value: typing.Any
@@ -31,13 +31,12 @@ def freeze_attributes(cls: typing.Type) -> typing.Type:
         :param self: the class
         :param key: name of attribute to set
         :param value: value to set in attribute
+        :raises AttributeError:
         """
         # hasattr costs an extra lookup at runtime...
-        if self.__is_frozen and not hasattr(  # pylint: disable=protected-access
-            self, key
-        ):
+        if self.__is_frozen and not hasattr(self, key):
             raise AttributeError(
-                "Class {} is frozen. Cannot set {} = {}".format(  # pylint: disable=consider-using-f-string)
+                "Class {} is frozen. Cannot set {} = {}".format(
                     cls.__name__, key, value
                 )
             )
@@ -58,18 +57,18 @@ def freeze_attributes(cls: typing.Type) -> typing.Type:
         def the_wrapper(
             self: typing.Any, *args: typing.Any, **kwargs: typing.Any
         ) -> None:
-            """
+            r"""
             Decorate to set class frozen flag.
 
             Apply to __init__
 
-            :param args:
-            :param kwargs:
+            :param \*args:
+            :param \**kwargs:
             """
             func(self, *args, **kwargs)
 
             # WORK - set the class flag
-            self.__is_frozen = True  # pylint: disable=protected-access
+            self.__is_frozen = True
 
         return the_wrapper
 
